@@ -41,10 +41,22 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
+if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app', '.rajsunar.live', 'rajsunar.live']
+else:
+    if '.vercel.app' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append('.vercel.app')
+    if '.rajsunar.live' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append('.rajsunar.live')
+    if 'rajsunar.live' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append('rajsunar.live')
+
 # Add Heroku hostname if deployed
 if 'DYNO' in os.environ:
     ALLOWED_HOSTS.append('.herokuapp.com')
-    ALLOWED_HOSTS.append('.rajsunar.live')
+
+
+
 
 # Critical for Heroku SSL
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
